@@ -1,0 +1,82 @@
+#!/bin/bash
+
+request=$(ps aux | grep $0 | wc -l)
+if [[ $request -gt 4 ]]
+then 
+   echo "Not allowed multiple run"
+   exit 40;
+fi
+
+FILE=$1
+
+if [ -z "$FILE" ]; then
+   echo "empty"
+   exit 0;
+fi
+if [ ! -f "$FILE" ]; then
+   echo "no such file"
+   exit 20;
+fi
+
+SFILE="laststart"
+
+#  Get first range value
+if [ ! -f "$SFILE" ]; then
+   date_from="01/Jan/1990:00:00:00"
+   echo $date_from;
+else
+   date_from=$(awk -F " " '{ print $2 }' $SFILE)
+   echo $date_from;
+fi
+
+#  Get second range value
+read -p "Enter end date  " date_to
+
+#  Read file lines in cycle
+while IFS="" read -r p || [ -n "$p" ]
+do 
+#  Get part or string where is a timestamp
+   var=$(echo $p | awk 'match($p,"[0-9]{2}/\\w*/[0-9]{4}:[0-9]{2}:[0-9]{2}:[0-9]{2}",a) { print a[0]}')
+   str1=$var
+
+#  Format range values to standart format
+   str1=${str1//'/'/' '}
+   str1=${str1/':'/' '}
+   str2=${date_from//'/'/' '}
+   str2=${str2/':'/' '}
+   str3=${date_to//'/'/' '}
+   str3=${str3/':'/' '}
+#  Turn date values into seconds  
+   str1=$(date -d "$str1" "+%s")
+   str2=$(date -d "$str2" "+%s")
+   str3=$(date -d "$str3" "+%s")
+#  Search for dates in range 
+   if [[ $str1 -gt $str2 && $str1 -lt $str3 ]]; then
+#  Put lines that match to temporary file 
+     echo $p >> logtmp; 
+#  We know that file is sorted by date and there is no need to keep looking when we met a bigger date
+   elif [ $str1 -gt $str3 ]; then
+      break;S
+   fi
+done < $FILE;
+#  Then we work with created temporary file
+echo $date_from $date_to
+
+echo -n "" > laststart
+echo "${date_from} ${date_to}" >> laststart
+
+echo 'IP'
+awk '{arr[$1]+=1;} END {for (i in arr) print i, arr[i]}' logtmp | sort -r -k2 -n | head -n 15
+
+echo 'RESOURCES'
+awk '{arr[$7]+=1;} END {for (i in arr) print i, arr[i]}' logtmp | sort -r -k2 -n | head -n 15
+
+echo 'ALL RETURN CODES'
+awk '{arr[$9]+=1;} END {for (i in arr) print i, arr[i]}' logtmp | sort -r -k2 -n | head -n 15
+
+echo 'ERROR CODES'
+awk '{arr[$9]+=1;} END {for (i in arr) if (match(i, "4|5") == 1) print i, arr[i]}' logtmp | sort -r -k2 -n | head -n 15
+
+rm logtmp
+
+exit 0
