@@ -107,10 +107,18 @@ sudo lsblk
 
 ## 6. Удалить файлы и после монтирования снимка убедиться, что созданные нами файлы присутствуют.
 
+Удалим файлы и проверим есть ли удалённые файлы на снэпшоте
+```bash
+sudo rm -f /mnt/mock{B..D}
+sudo mkdir /snap_test
+sudo mount /dev/lvmlab/snshot /snap_test
+ls /snap_test
+```
 ![](https://i.ibb.co/SXq1Rbr/18.png)
+```bash
+sudo umount /snap_test
+```
+![](https://i.ibb.co/T0fv5Z5/19.png)
 
-sudo mkdir /snapsh
-sudo mount /dev/mai/log_snapsh /snapsh
-ls /snapsh
-sudo umount /snapsh
+
 
