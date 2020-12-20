@@ -85,7 +85,32 @@ sudo df -h
 sudo umount /mnt
 sudo fsck -fy /dev/lvmlab/achu
 sudo resize2fs /dev/lvmlab/achu 2100M             
-//sudo resize2fs -M /dev/lvmlab/achu 
 sudo mount /dev/lvmlab/achu /mnt
 sudo df -h
 ```
+![](https://i.ibb.co/tMmFwCh/11-FS.png)
+
+## 5. Создать несколько новых файлов и создать снэпшот.
+
+```bash
+sudo touch /mnt/mock{A..E}
+ls /mnt
+```
+![](https://i.ibb.co/BKM2qkY/16-5.png)
+
+```bash
+sudo lvcreate -L 100M -s -n snshot /dev/lvmlab/achu
+sudo lvs
+sudo lsblk
+```
+![](https://i.ibb.co/KNs9wZq/17.png)
+
+## 6. Удалить файлы и после монтирования снимка убедиться, что созданные нами файлы присутствуют.
+
+![](https://i.ibb.co/SXq1Rbr/18.png)
+
+sudo mkdir /snapsh
+sudo mount /dev/mai/log_snapsh /snapsh
+ls /snapsh
+sudo umount /snapsh
+
