@@ -71,7 +71,7 @@ sudo df -h
 Расширим файловую систему
 
 ```bash
-sudo resize2fs /dev/labgr/first
+sudo resize2fs /dev/lvmlab/achu
 sudo df -h
 ```
 
@@ -79,4 +79,13 @@ sudo df -h
 
 ## 4. Уменьшить файловую систему
 
+Отмонтируем файловую систему, после чего пересоберём том и систему. При уменьшении размеров системы необходимо учитывать минимальное пространство, которое ей необходимо, чтобы не обрезать нужные файлы, поэтому был оставлен небольшой запас:
 
+```bash
+sudo umount /mnt
+sudo fsck -fy /dev/lvmlab/achu
+sudo resize2fs /dev/lvmlab/achu 2100M             
+//sudo resize2fs -M /dev/lvmlab/achu 
+sudo mount /dev/lvmlab/achu /mnt
+sudo df -h
+```
