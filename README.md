@@ -55,3 +55,28 @@ sudo dd if=/dev/zero of=/mnt/mock.file bs=1M count=4500 status=progress
 df -h
 ```
 ![](https://i.ibb.co/WvvtxpJ/6-Logic-Volume.png)
+
+## 3. Расширить vg, lv и файловую систему
+```bash
+sudo pvcreate /dev/sdc
+sudo vgextend lvmlab /dev/sdc
+sudo lvextend -l+100%FREE /dev/lvmlab/achu
+sudo lvdisplay
+sudo lvs
+sudo df -h
+```
+
+![](https://i.ibb.co/f21rm3s/7-Volume-Group-1.png)
+
+Расширим файловую систему
+
+```bash
+sudo resize2fs /dev/labgr/first
+sudo df -h
+```
+
+![](https://i.ibb.co/WFZwgCF/9.png)
+
+## 4. Уменьшить файловую систему
+
+
