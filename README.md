@@ -18,9 +18,20 @@ sudo pvs
 ```
 ![](https://i.ibb.co/2nkxRfW/111.png)
 
-```bash
 Cоздадим виртуальную группу 
+
+```bash
 sudo vgcreate labgr /dev/sdb 
 sudo vgdisplay -v labgr
 sudo vgs
 ```
+![](https://i.ibb.co/5hLNmYd/1-Volume-Group.png)
+
+Создадим логическую группу
+```bash
+sudo lvcreate -l+100%FREE -n achu lvmlab 
+sudo lvdisplay 
+sudo lvs
+```
+![](https://i.ibb.co/HLSKJp9/3-Logic-Volume-1.png)
+![](
