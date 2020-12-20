@@ -48,3 +48,10 @@ sudo mount
 ```
 ![](https://i.ibb.co/ccjMv8V/5.png)
 
+## 2. Создать файл, заполенный нулями на весь размер точки монтирования
+Побайтово скопируем в файл 4500 кусков по 1 Мб
+```bash
+sudo dd if=/dev/zero of=/mnt/mock.file bs=1M count=4500 status=progress
+df -h
+```
+![](https://i.ibb.co/WvvtxpJ/6-Logic-Volume.png)
