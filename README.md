@@ -105,7 +105,7 @@ sudo lsblk
 ```
 ![](https://i.ibb.co/KNs9wZq/17.png)
 
-## 6. Удалить файлы и после монтирования снимка убедиться, что созданные нами файлы присутствуют.
+## 6. Удалить файлы и после монтирования снимка убедиться, что созданные нами файлы присутствуют
 
 Удалим файлы и проверим есть ли удалённые файлы на снэпшоте
 ```bash
@@ -120,5 +120,23 @@ sudo umount /snap_test
 ```
 ![](https://i.ibb.co/T0fv5Z5/19.png)
 
+## 7. Выполнить слияние томов
 
+```bash
+sudo umount /mnt
+sudo lvconvert --merge /dev/lvmlab/snshot
+sudo mount /dev/lvmlab/snshot /mnt
+ls /mnt
+```
 
+![](https://i.ibb.co/swfmP1R/12-Logic-Volume.png)
+
+## 8. Сделать зеркало
+
+Добавим еще устройств в PV, затем создадим VG и смонтируем LV с флагом того, что она монтируется с созданием зеркала
+
+```bash
+sudo vgcreate mirrorgroup /dev/sd{d,e}
+sudo lvcreate -l+100%FREE -m1 -n mirror mirrorgroup
+```
+![](https://i.ibb.co/jyVjYK2/mirror1.png)
