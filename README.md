@@ -21,8 +21,8 @@ sudo pvs
 Cоздадим виртуальную группу 
 
 ```bash
-sudo vgcreate labgr /dev/sdb 
-sudo vgdisplay -v labgr
+sudo vgcreate lvmlab /dev/sdb 
+sudo vgdisplay -v lvmlab
 sudo vgs
 ```
 ![](https://i.ibb.co/5hLNmYd/1-Volume-Group.png)
@@ -34,4 +34,17 @@ sudo lvdisplay
 sudo lvs
 ```
 ![](https://i.ibb.co/HLSKJp9/3-Logic-Volume-1.png)
-![](
+![](https://i.ibb.co/GJyFs82/2-Logic-Volume-2.png)
+
+Создадим и смонтируем файловую систему
+```bash
+sudo mkfs.ext2 /dev/lvmlab/achu
+```
+![](https://i.ibb.co/d2Yy9C4/4-ext2.png)
+
+```bash
+sudo mount /dev/lvmlab/achu /mnt 
+sudo mount
+```
+![](https://i.ibb.co/ccjMv8V/5.png)
+
