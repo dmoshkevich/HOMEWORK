@@ -204,4 +204,19 @@ Writing superblocks and filesystem accounting information: done
 /dev/md0p1: UUID="54d87259-ab53-4fad-b534-25ca60bf13c4" TYPE="ext4" PARTUUID="bcb5ca80-01"
 ```
 Редактируем файл fstab - добавим туда UUID=<тутъ> /mnt ext4 defaults 0 0.
+```
+#
+# /etc/fstab
+# Created by anaconda on Mon Sep 14 06:20:53 2020
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+/dev/mapper/cl-root     /                       xfs     defaults	0 0
+UUID=54d87259-ab53-4fad-b534-25ca60bf13c4 /boot                   ext4    defau$
+/dev/mapper/cl-swap     swap                    swap    defaults	0 0
+```
 mount -a
