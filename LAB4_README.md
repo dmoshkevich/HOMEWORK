@@ -130,15 +130,52 @@ mdadm: /dev/md0 has been started with 4 drives and 1 spare.
 ```
 Перезагрузим и проверим 
 ```
-lsblk
+[dar@localhost ~]$ sudo lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE   MOUNTPOINT
+sda           8:0    0   20G  0 disk   
+├─sda1        8:1    0    1G  0 part   /boot
+└─sda2        8:2    0   19G  0 part   
+  ├─cl-root 253:0    0   17G  0 lvm    /
+  └─cl-swap 253:1    0    2G  0 lvm    [SWAP]
+sdb           8:16   0  500M  0 disk   
+└─md0         9:0    0  996M  0 raid10 
+sdc           8:32   0  500M  0 disk   
+└─md0         9:0    0  996M  0 raid10 
+sdd           8:48   0  500M  0 disk   
+└─md0         9:0    0  996M  0 raid10 
+sde           8:64   0  500M  0 disk   
+└─md0         9:0    0  996M  0 raid10 
+sdf           8:80   0  500M  0 disk   
+└─md0         9:0    0  996M  0 raid10 
+sr0          11:0    1 1024M  0 rom  
 ```
 -------
 ### 4. Создать на RAID массиве раздел и файловую систему
 Добавим раздел 
 ```
-sudo fdisk /dev/md0
+[dar@localhost ~]$ sudo fdisk /dev/md0
+
+Welcome to fdisk (util-linux 2.32.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0xbcb5ca80.
+
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): p
+Partition number (1-4, default 1): 1
+First sector (2048-2039807, default 2048): 
+Last sector, +sectors or +size{K,M,G,T,P} (2048-2039807, default 2039807): +512M
+
+Created a new partition 1 of type 'Linux' and of size 512 MiB.
+
+Command (m for help): 
+
 ```
-----------
 n - новый раздел, 
 p - тип раздела (основной)
 1 - номер раздела, указываем 
@@ -147,13 +184,24 @@ p - тип раздела (основной)
 Cохраним w и выходим (u). 
 Создадим файловую систему 
 ```
-sudo mkfs.ext4 /dev/md0p1
+[dar@localhost ~]$ sudo mkfs.ext4 /dev/md0p1
+mke2fs 1.45.4 (23-Sep-2019)
+Creating filesystem with 131072 4k blocks and 32768 inodes
+Filesystem UUID: 54d87259-ab53-4fad-b534-25ca60bf13c4
+Superblock backups stored on blocks: 
+	32768, 98304
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (4096 blocks): done
+Writing superblocks and filesystem accounting information: done
+
 ```
----------
 ### 5. Добавить запись в fstab для монтирования при перезагрузке
 Узнаем нужный UUID
 ```
-sudo blkid /dev/md0p1
+[dar@localhost ~]$ sudo blkid /dev/md0p1
+/dev/md0p1: UUID="54d87259-ab53-4fad-b534-25ca60bf13c4" TYPE="ext4" PARTUUID="bcb5ca80-01"
 ```
 Редактируем файл fstab - добавим туда UUID=<тутъ> /mnt ext4 defaults 0 0.
 mount -a
