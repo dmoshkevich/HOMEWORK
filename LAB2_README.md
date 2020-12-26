@@ -57,6 +57,7 @@ sudo nano /etc/pam.d/sshd
 ```
 Проверяем вход по ssh
 ```
+[dar@localhost /]$ ssh user_1@localhost
 user_1@localhost's password: 
 Permission denied, please try again.
 ```
