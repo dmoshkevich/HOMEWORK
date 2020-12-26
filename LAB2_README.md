@@ -56,7 +56,10 @@ sudo nano /etc/pam.d/sshd
 После строки account    required     pam_nologin.so добавим: account    required     pam_script.so
 ```
 Проверяем вход по ssh
-ssh user_1@localhost
+```
+user_1@localhost's password: 
+Permission denied, please try again.
+```
 ## ЧАСТЬ 2
 
 ### 4. Выдать пользователю право использовать докер
