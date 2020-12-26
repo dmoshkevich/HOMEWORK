@@ -1,9 +1,9 @@
 ## ЧАСТЬ 1
 ### 1. Cоздать несколько пользователей с паролями и шеллом
 ```
-sudo useradd -p password -s /bin/bash user_1
-sudo useradd -p password -s /bin/bash user_2
-sudo useradd -p password -s /bin/bash user_3
+sudo useradd -d /home/Dirname -s /path/to/shell user_1
+sudo useradd -d /home/Dirname -s /path/to/shell user_2
+sudo useradd -d /home/Dirname -s /path/to/shell user_3
 ```
 ### 2. Создать группу admin и включить туда пару пользователе и root
 ```
@@ -15,7 +15,7 @@ sudo usermod -aG admin root
 ### 3.Запретить всем пользователям, кроме группы admin, логин в систему по SSH в выходные дни (суббота и воскресенье, без учета праздников)
 Установим pam_script:
 ```
-sudo apt install libpam-script
+sudo yum install pam pam_script openssh-server openssh-clients
 ```
 Создадим скрипт для проверки пользователя
 ```
